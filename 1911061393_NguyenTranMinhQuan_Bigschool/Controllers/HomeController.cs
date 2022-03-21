@@ -22,6 +22,7 @@ namespace _1911061393_NguyenTranMinhQuan_Bigschool.Controllers
 
             return View(upcommingCourses);
         }
+        //Commit 11h 21/03
 
         public ActionResult About()
         {
