@@ -14,8 +14,8 @@ namespace _1911061393_NguyenTranMinhQuan_Bigschool.Models
     {
         public DbSet<Course> Courses { get; set; }
         public DbSet<Category> Categories { get; set; }
-        /*public DbSet<Attendance> Attendances { get; set; }
-        public DbSet<Following> Followings { get; set; }*/
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<Following> Followings { get; set; }
 
 
 
@@ -29,7 +29,7 @@ namespace _1911061393_NguyenTranMinhQuan_Bigschool.Models
             return new ApplicationDbContext();
         }
 
-       /* protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Attendance>()
                .HasRequired(a => a.Course)
@@ -48,7 +48,7 @@ namespace _1911061393_NguyenTranMinhQuan_Bigschool.Models
 
             base.OnModelCreating(modelBuilder);
 
-        }*/
+        }
 
     }
 }
