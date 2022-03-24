@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace _1911061393_NguyenTranMinhQuan_Bigschool.Controllers.Api
 {
+    //Hoàn thành
     public class CoursesController : ApiController
     {
         public ApplicationDbContext _dbContext { get; set; }
