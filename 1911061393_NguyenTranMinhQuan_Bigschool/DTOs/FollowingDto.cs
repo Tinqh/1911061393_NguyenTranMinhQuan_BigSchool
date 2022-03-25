@@ -7,6 +7,7 @@ namespace _1911061393_NguyenTranMinhQuan_Bigschool.DTOs
 {
     public class FollowingDto
     {
-        public string FolloweeId { get; set; }  
+        public string FolloweeId { get; set; }
+        public int CourseId { get; set; }
     }
 }

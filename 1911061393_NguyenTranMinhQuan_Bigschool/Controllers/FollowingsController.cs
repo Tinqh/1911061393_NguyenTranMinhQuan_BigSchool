@@ -12,28 +12,33 @@ namespace _1911061393_NguyenTranMinhQuan_Bigschool.Controllers
 {
     public class FollowingsController : ApiController
     {
-        
-            private readonly ApplicationDbContext _dbContext;
-            public FollowingsController() { _dbContext = new ApplicationDbContext(); }
 
-            //commit lusc 13h20 ngay 22/03
+        private readonly ApplicationDbContext _dbContext;
 
-            public IHttpActionResult Follow(FollowingDto followingDto)
+        public FollowingsController()
+        {
+            _dbContext = new ApplicationDbContext();
+        }
+
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult Follow(FollowingDto followingDto)
+        {
+            var userId = User.Identity.GetUserId();
+            var following = new Following
             {
-                var userId = User.Identity.GetUserId();
-                if (_dbContext.Followings.Any(f => f.FolloweeId == userId && f.FolloweeId == followingDto.FolloweeId))
-                    return BadRequest("The Attendance already exists!");
-                var folowing = new Following
-                {
-                    FollowerId = userId,
-                    FolloweeId = followingDto.FolloweeId
-
-                };
-
-                _dbContext.Followings.Add(folowing);
+                FollowerId = userId,
+                FolloweeId = followingDto.FolloweeId
+            };
+            if (_dbContext.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == followingDto.FolloweeId))
+            {
+                _dbContext.Entry(following).State = System.Data.Entity.EntityState.Deleted;
                 _dbContext.SaveChanges();
-
-                return Ok();
+                return Json(new { isFollow = false, followeeId = followingDto.FolloweeId });
             }
+
+            _dbContext.Followings.Add(following);
+            _dbContext.SaveChanges();
+            return Json(new { isFollow = true, followeeId = followingDto.FolloweeId });
+        }
     }
 }

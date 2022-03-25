@@ -60,6 +60,10 @@ margin-top: 10px;
 .course > li:hover .action {
     display: block;
 }
+    .course  .action {
+        margin-top:-25px;
+        margin-bottom:20px;
+    }
     /* Set width on the form input elements since they're 100% wide by default */
     input, select, textarea {
 max-width: 280px;

@@ -13,21 +13,23 @@ namespace _1911061393_NguyenTranMinhQuan_Bigschool.Controllers
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
+
         public CoursesController()
         {
             _dbContext = new ApplicationDbContext();
         }
         // GET: Courses
-
         [Authorize]
         public ActionResult Create()
         {
             var viewModel = new CourseViewModel
             {
-                Categories = _dbContext.Categories.ToList()
+                Categories = _dbContext.Categories.ToList(),
+                Heading = "Add Course"
             };
             return View(viewModel);
         }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -56,16 +58,25 @@ namespace _1911061393_NguyenTranMinhQuan_Bigschool.Controllers
             var userId = User.Identity.GetUserId();
             var courses = _dbContext.Attendances
                 .Where(a => a.AttendeeId == userId)
-                 .Select(a => a.Course)
-                 .Include(l => l.Lecturer)
-                 .Include(l => l.Category)
-                 .ToList();
+                .Select(a => a.Course)
+                .Include(l => l.Lecturer)
+                .Include(l => l.Category)
+                .ToList();
+            var isFollowCourses = _dbContext.Attendances
+                .Where(a => a.AttendeeId == userId)
+                .Include(c => c.Course);
+            var isFollowLecturers = _dbContext.Followings
+                .Where(a => a.FollowerId == userId)
+                .Include(c => c.Followee);
             var viewModel = new CoursesViewModel
             {
-                UpcommingCourses= courses,
-                ShowAction = User. Identity.IsAuthenticated
+                UpcommingCourses = courses,
+                ShowAction = User.Identity.IsAuthenticated,
+                IsFollowCourses = isFollowCourses,
+                IsFollowLecturers = isFollowLecturers,
             };
             return View(viewModel);
+
 
         }
 
@@ -89,17 +100,17 @@ namespace _1911061393_NguyenTranMinhQuan_Bigschool.Controllers
             var viewModel = new CourseViewModel
             {
                 Categories = _dbContext.Categories.ToList(),
-                Date = course.DateTime.ToString("dd/M/yyyy"),
+                Date = course.DateTime.ToString("dd/MM/yyyy"),
                 Time = course.DateTime.ToString("HH:mm"),
                 Category = course.CategoryId,
                 Place = course.Place,
                 Heading = "Edit Course",
                 Id = course.Id
+
             };
             return View("Create", viewModel);
-
-
         }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
